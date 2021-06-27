@@ -1,27 +1,64 @@
 const express = require('express')
 const slugify = require('slugify')
-const articles = require('../articles/modelArticles')
+
+const articles = require('./modelArticles')
+const Category = require('../categories/modelCategories')
+
 const router = express.Router()
-// rotas de artigos
-router.get("/admin/articles/articles", (req, res)=>{
-  res.render("admin/articles/articles")
+
+
+router.get("/admin/articles", (req, res)=>{
+  articles.findAll({
+    include:[{model:Category}]
+  }).then(articles=>{
+    res.render("admin/articles/index", {articles:articles})  
+  })
 })
 
-
+//salavando articles..
 router.post("/articles/save", (req, res)=>{
-
+  var title = req.body.title
   var body = req.body.body
-  if(body!= undefined){
-    articles.create({
-      body:body,
-      slug:slugify(body)
-    }).then(()=>{
-      res.redirect("/")
-    })
+  var Categoryid = req.body.category
+
+  articles.create({
+    title:title,
+    slug: slugify(title),
+    body:body,
+    categoryId: Categoryid
+  }).then(()=>[
+    res.redirect("/admin/articles")
+  ])
+
+})
+
+//deletando artigos..
+router.post("/articles/delete",(req, res)=>{
+  var id  = req.body.id
+  if(id!=undefined){
+    if(!isNaN(id)){
+      articles.destroy({
+        where:{
+          id:id
+        }
+      }).then(()=>{
+        res.redirect("/admin/articles")
+      })
+    }else{
+        res.redirect("/admin/articles")
+    }
   }else{
-    // se o usuário cadastrar volta ao a pagina de ...
-    res.redirect("/admin/articles/articles")
+    res.redirect("/admin/articles")
   }
 })
 
+
+// rotas para cadastrar novos artigos
+router.get("/admin/articles/new", (req, res)=>{
+  Category.findAll().then(categories =>{
+    res.render("admin/articles/new", {categories:categories})
+  })
+})
+
+//https://www.tiny.cloud/get-tiny/self-hosted/
 module.exports = router

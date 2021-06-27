@@ -4,7 +4,8 @@ const connection = new Sequelise(
   'root',
   '12345',{
     host:'localhost',
-    dialect:'mysql'
+    dialect:'mysql',
+    timezone:"-03:00"
   }
 
 )

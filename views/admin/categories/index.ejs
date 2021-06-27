@@ -2,11 +2,15 @@
 <%- include ('../../partials/navbar.ejs'  ) %>
 
 <div class="container">
+
+  
   <hr>
   <h2>CATEGORIAS</h2>
   <hr>
   <br>
   <a class="btn btn-success" href="/admin/categories/new">Criar nova categoria</a>
+  <br>
+  <br>
   <br>
   <table class="table table-bordered">
     <thead>
@@ -18,17 +22,18 @@
       </tr>
     </thead>
     <tbody>
-      <% categories.forEach(category =>{  %>
+      <% categories.forEach((category)=>{%>
         <tr>
           <th><%= category.id %></th>
           <th><%= category.title %></th>
           <th><%= category.slug %></th>
           <th>
-            <button class=" btn btn-warning">Editar</button> / 
+            <a href="/admin/categories/edit/<%= category.id %>"
+               class=" btn btn-warning">Editar</a> / 
 
             <form action="/categories/delete" method="POST" style="display: inline;" onsubmit="confirmDelete(event, this)">
               <input type="hidden" name="id"  value="<%= category.id%>">
-              <button class=" btn btn-danger">Excluir</button>
+              <button class=" btn btn-danger" onclick="alerta(event)">Excluir</button>
             </form>
          
           </th>
@@ -36,15 +41,27 @@
       <% }) %>
     </tbody>
   </table>
+  <p id="alert">
+  </p>
 </div>
 
 <%- include ('../../partials/footer.ejs'  ) %>
 <script>
   function confirmDelete(event, form) {
+    var alerta = document.getElementById("alert")
     event.preventDefault()
-    var decision = confirm("Deseja Deletar esta Categoria?")
+    var decision = confirm('Deseja realmente excluir este item?')
     if(decision){
+   
       form.submit()
+      alerta.innerHTML = `
+    <div class="alert alert-danger" role="alert">
+         Item foi excluido..
+    </div>`
     }
+  
+    
   }
+
+ 
 </script>

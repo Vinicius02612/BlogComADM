@@ -20,8 +20,6 @@
 
 `Logue no MySQL com o comando abaixo:` <br/>
   `-> sudo mysql -u root -p`<br/>
-
-
   
 `Agora, digite o comando abaixo substituindo a palavra password pela senha que desejar:`  <br/>
   `-> ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'; flush privileges;`

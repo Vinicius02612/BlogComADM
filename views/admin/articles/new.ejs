@@ -1,0 +1,57 @@
+<%- include ('../../partials/header.ejs'  ) %>
+<%- include ('../../partials/navbar.ejs'  ) %>
+
+<div class="container">
+  <br>
+  <hr>
+  <div class="card">
+    <div class="card-header">
+      <h2>Novo Artigo</h2>
+      <br>
+      <br>
+      <br>
+    </div>
+    <div class="card-body">
+      <form  method="POST" action="/articles/save">
+        <input class="form-control" type="text" name="title" placeholder="Definao titulo do artigo">
+        <br>
+        <br>
+        <br>
+        <textarea id="articles" class="form-control" name="body" placeholder="Escreva o artigo aqui" cols="30" rows="10" ></textarea>
+        <br>
+        <label>Categorias</label>
+        <br>
+        <br>
+        <select name="category" class="form-control">
+            <% categories.forEach((category) => { %>
+              <option value="<%= category.id %>"><%= category.title %></option>
+            <% }) %>  
+        </select>
+
+        <br>
+         
+        <button class="btn btn-success">Cadastrar</button>
+        <br>
+        <br>
+          <a href="/admin/articles" class="btn btn-primary ms-auto">Voltar</a>
+      </form>
+    </div>
+
+  </div>
+  
+</div>
+
+<%- include ('../../partials/footer.ejs'  ) %>
+
+<script src="/tinymce/tinymce.min.js"></script>
+
+<script>
+  tinymce.init({
+    selector:"#articles",
+    language:'pt_BR',
+    plugins:[
+      'advlist autolink link image lists print preview hr searchreplace wordcount fullscreen insertdatetime media save table paste emoticons'
+    ]
+  })
+//https://www.tiny.cloud/get-tiny/language-packages/
+</script>
