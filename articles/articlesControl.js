@@ -4,12 +4,12 @@ const slugify = require('slugify')
 const articles = require('./modelArticles')
 const Category = require('../categories/modelCategories')
 
+
 const router = express.Router()
 
 
 router.get("/admin/articles", (req, res)=>{
-  articles.findAll({
-    include:[{model:Category}]
+  articles.findAll({include:[{model:Category}]
   }).then(articles=>{
     res.render("admin/articles/index", {articles:articles})  
   })
@@ -31,6 +31,30 @@ router.post("/articles/save", (req, res)=>{
   ])
 
 })
+
+//rota para edição de artigos
+router.get("/admin/articles/edit/:id", (req, res) =>{
+  var id = req.params.id
+
+  //se o id for invalido volta para pagina de artigos
+  if(isNaN(id)){
+    res.redirect("admin/articles")
+  }
+
+  articles.findByPk(id).then(articles =>{
+    if(articles!= undefined){
+
+      Category.findAll().then(categories =>{
+        res.render("admin/articles/edit", {categories:categories, articles:articles})
+      })
+
+    }else{
+      res.redirect("admin/articles")
+    }
+  })
+})
+
+
 
 //deletando artigos..
 router.post("/articles/delete",(req, res)=>{

@@ -8,8 +8,8 @@ const ModelCategory = require('./categories/modelCategories')
 
 const categories = require('./categories/categoriesControl')
 const Articles = require('./articles/articlesControl');
-const Article = require('./articles/modelArticles');
-const Category = require('./categories/modelCategories');
+
+
 
 
 app.set('view engine', 'ejs')
