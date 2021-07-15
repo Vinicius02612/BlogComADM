@@ -54,7 +54,28 @@ router.get("/admin/articles/edit/:id", (req, res) =>{
   })
 })
 
+//persistindo atualizaçã de artigos no banco de dados
+router.post("/articles/update",(req, res) =>{
+  var id  = req.body.id
+  var title = req.body.title
+  var body = req.body.body
+  var category = req.body.category
 
+  articles.update({
+    title:title,
+    body:body,
+    categoryId:category,
+    slug:slugify(title)
+  },{
+    where:{
+      id:id
+    }
+  }).then(()=>{
+    res.redirect("/admin/articles")
+  }).catch( err =>{
+    res.redirect("/")
+  })
+})
 
 //deletando artigos..
 router.post("/articles/delete",(req, res)=>{
@@ -75,6 +96,7 @@ router.post("/articles/delete",(req, res)=>{
     res.redirect("/admin/articles")
   }
 })
+
 
 
 // rotas para cadastrar novos artigos

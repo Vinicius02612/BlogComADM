@@ -2,17 +2,25 @@
 const express = require('express');
 const app = express()
 const connection = require('./database/database')
+const session = require('express-session')
 
 const ModelArticles = require('./articles/modelArticles')
 const ModelCategory = require('./categories/modelCategories')
+const modelUser = require('./users/modelUser')
 
 const categories = require('./categories/categoriesControl')
 const Articles = require('./articles/articlesControl');
+const Users = require('./users/controllerUsers')
 
 
 
 
 app.set('view engine', 'ejs')
+
+//configurando session e cookie no navegador do user
+app.use(session({
+  secret:"@#&$*#&*&Y&*&sdfsdf", cookie:{maxAge:30000}
+}))
 
 app.use(express.static('public'))
 
@@ -31,6 +39,7 @@ connection
 
 app.use("/",Articles)
 app.use("/",categories)
+app.use("/", Users)
 
 app.get("/", (req, res)=>{
   ModelArticles.findAll({

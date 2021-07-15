@@ -12,6 +12,7 @@
         </div>
         <div class="card-body">
           <form  method="POST" action="/articles/update">
+            <input type="hidden" name="id" value="<%= articles.id %>">
             <input class="form-control" type="text" name="title" value="<%= articles.title%>">
             <br>
             <br>
@@ -37,7 +38,7 @@
             <button class="btn btn-success">Atualizar</button>
             <br>
             <br>
-              <a href="/admin/articles" class="btn btn-primary ms-auto">Voltar</a>
+             >
           </form>
         </div>
       </div>
