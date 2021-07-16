@@ -3,12 +3,12 @@ const slugify = require('slugify')
 
 const articles = require('./modelArticles')
 const Category = require('../categories/modelCategories')
-
+const Authenticate = require('../middlewares/adminAuth')
 
 const router = express.Router()
 
 
-router.get("/admin/articles", (req, res)=>{
+router.get("/admin/articles",Authenticate, (req, res)=>{
   articles.findAll({include:[{model:Category}]
   }).then(articles=>{
     res.render("admin/articles/index", {articles:articles})  
@@ -33,7 +33,7 @@ router.post("/articles/save", (req, res)=>{
 })
 
 //rota para edição de artigos
-router.get("/admin/articles/edit/:id", (req, res) =>{
+router.get("/admin/articles/edit/:id",Authenticate, (req, res) =>{
   var id = req.params.id
 
   //se o id for invalido volta para pagina de artigos
@@ -55,7 +55,7 @@ router.get("/admin/articles/edit/:id", (req, res) =>{
 })
 
 //persistindo atualizaçã de artigos no banco de dados
-router.post("/articles/update",(req, res) =>{
+router.post("/articles/update",Authenticate,(req, res) =>{
   var id  = req.body.id
   var title = req.body.title
   var body = req.body.body
@@ -78,7 +78,7 @@ router.post("/articles/update",(req, res) =>{
 })
 
 //deletando artigos..
-router.post("/articles/delete",(req, res)=>{
+router.post("/articles/delete",Authenticate,(req, res)=>{
   var id  = req.body.id
   if(id!=undefined){
     if(!isNaN(id)){
@@ -100,7 +100,7 @@ router.post("/articles/delete",(req, res)=>{
 
 
 // rotas para cadastrar novos artigos
-router.get("/admin/articles/new", (req, res)=>{
+router.get("/admin/articles/new", Authenticate,(req, res)=>{
   Category.findAll().then(categories =>{
     res.render("admin/articles/new", {categories:categories})
   })
